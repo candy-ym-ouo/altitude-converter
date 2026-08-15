@@ -98,7 +98,7 @@ func readCSV(r io.Reader, to string) ([]record, error) {
 	if err != nil {
 		return nil, fmt.Errorf("read CSV: %w", err)
 	}
-	if len(rows) < 1 {
+	if len(rows) < 2 {
 		return nil, errors.New("CSV must contain a header and at least one data row")
 	}
 	valueIndex, unitIndex := -1, -1
