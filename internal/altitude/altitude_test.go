@@ -13,7 +13,7 @@ func TestConvert(t *testing.T) {
 }
 
 func TestInvalidInput(t *testing.T) {
-	for _, input := range []string{"", "nan", "+Inf", "abc"} {
+	for _, input := range []string{"", " \t\r\n", "\u00a0", "nan", "+Inf", "-Inf", "1e309", "abc"} {
 		if _, err := ParseValue(input); err == nil {
 			t.Errorf("ParseValue(%q) unexpectedly succeeded", input)
 		}
@@ -24,8 +24,17 @@ func TestInvalidInput(t *testing.T) {
 }
 
 func TestParseValueAcceptsSurroundingWhitespace(t *testing.T) {
-	got, err := ParseValue(" \t1250\n")
-	if err != nil || got != 1250 {
-		t.Fatalf("ParseValue() = %v, %v", got, err)
+	for _, tc := range []struct {
+		input string
+		want  float64
+	}{
+		{" \t1250\n", 1250},
+		{"\u00a0-1.25\u00a0", -1.25},
+		{" 1.7976931348623157e+308 ", math.MaxFloat64},
+	} {
+		got, err := ParseValue(tc.input)
+		if err != nil || got != tc.want {
+			t.Errorf("ParseValue(%q) = %v, %v; want %v, nil", tc.input, got, err, tc.want)
+		}
 	}
 }
