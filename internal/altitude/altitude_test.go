@@ -27,4 +27,12 @@ func TestConvertRejectsOverflowResult(t *testing.T) {
 	if _, _, _, err := Convert(math.MaxFloat64, "km", "m"); err == nil {
 		t.Fatal("overflowing conversion unexpectedly succeeded")
 	}
+	if got, _, _, err := Convert(math.MaxFloat64, "km", "km"); err != nil || got != math.MaxFloat64 {
+		t.Fatalf("same-unit conversion = %v, %v", got, err)
+	}
+	for _, value := range []float64{math.NaN(), math.Inf(1)} {
+		if _, _, _, err := Convert(value, "m", "km"); err == nil {
+			t.Errorf("Convert(%v) unexpectedly succeeded", value)
+		}
+	}
 }
