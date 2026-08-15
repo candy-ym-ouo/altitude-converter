@@ -62,6 +62,9 @@ func Convert(value float64, from, to string) (float64, string, string, error) {
 }
 
 // Format gives a stable, readable representation without gratuitous trailing zeroes.
+// Precision -1 emits the shortest decimal that round-trips to the same float64, so
+// high-precision conversions are preserved verbatim while integers and exact decimals
+// stay free of padding zeroes.
 func Format(value float64) string {
-	return strconv.FormatFloat(value, 'f', 6, 64)
+	return strconv.FormatFloat(value, 'f', -1, 64)
 }
