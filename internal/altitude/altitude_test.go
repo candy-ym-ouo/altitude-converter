@@ -22,3 +22,9 @@ func TestInvalidInput(t *testing.T) {
 		t.Error("unknown unit unexpectedly succeeded")
 	}
 }
+
+func TestConvertRejectsOverflowResult(t *testing.T) {
+	if _, _, _, err := Convert(math.MaxFloat64, "km", "m"); err == nil {
+		t.Fatal("overflowing conversion unexpectedly succeeded")
+	}
+}

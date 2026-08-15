@@ -55,9 +55,6 @@ func Convert(value float64, from, to string) (float64, string, string, error) {
 		return 0, "", "", err
 	}
 	result := value * units[from] / units[to]
-	if math.IsInf(result, 0) {
-		return 0, "", "", fmt.Errorf("conversion result is outside the supported numeric range")
-	}
 	return result, from, to, nil
 }
 
