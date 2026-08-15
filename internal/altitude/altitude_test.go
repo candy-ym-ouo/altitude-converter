@@ -22,3 +22,9 @@ func TestInvalidInput(t *testing.T) {
 		t.Error("unknown unit unexpectedly succeeded")
 	}
 }
+
+func TestFormatPreservesSignificantPrecision(t *testing.T) {
+	if got := Format(1234.567890123); got != "1234.567890123" {
+		t.Fatalf("Format() = %q", got)
+	}
+}
