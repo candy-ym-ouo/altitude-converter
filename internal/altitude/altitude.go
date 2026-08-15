@@ -24,7 +24,7 @@ var aliases = map[string]string{
 
 // NormalizeUnit returns the canonical abbreviation for a supported unit.
 func NormalizeUnit(unit string) (string, error) {
-	key := strings.ToLower(strings.TrimSpace(unit))
+	key := strings.ToLower(strings.Join(strings.Fields(unit), ""))
 	canonical, ok := aliases[key]
 	if !ok {
 		return "", fmt.Errorf("unsupported unit %q (use m, ft, km, or nm)", unit)
