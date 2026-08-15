@@ -24,8 +24,26 @@ func TestInvalidInput(t *testing.T) {
 }
 
 func TestConvertAcceptsSpacedUnitAlias(t *testing.T) {
-	got, from, to, err := Convert(1, "nautical mile", "m")
-	if err != nil || from != "nm" || to != "m" || got != 1852 {
+	for _, unit := range []string{"nautical mile", " nautical mile ", "nautical\tmile", "nautical\u00a0mile"} {
+		got, from, to, err := Convert(1, unit, "m")
+		if err != nil || from != "nm" || to != "m" || got != 1852 {
+			t.Errorf("Convert(1, %q, %q) = %v, %q, %q, %v", unit, "m", got, from, to, err)
+		}
+	}
+	got, from, to, err := Convert(1852, "m", " nautical mile ")
+	if err != nil || from != "m" || to != "nm" || got != 1 {
 		t.Fatalf("Convert() = %v, %q, %q, %v", got, from, to, err)
+	}
+}
+
+func TestNormalizeUnitPreservesAliases(t *testing.T) {
+	for alias, want := range aliases {
+		got, err := NormalizeUnit(" \t" + alias + "\n")
+		if err != nil || got != want {
+			t.Errorf("NormalizeUnit(%q) = %q, %v; want %q, nil", alias, got, err, want)
+		}
+	}
+	if _, err := NormalizeUnit(" \t\u00a0\n"); err == nil {
+		t.Error("NormalizeUnit() unexpectedly accepted whitespace-only input")
 	}
 }
