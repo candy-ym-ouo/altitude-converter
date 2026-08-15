@@ -63,5 +63,5 @@ func Convert(value float64, from, to string) (float64, string, string, error) {
 
 // Format gives a stable, readable representation without gratuitous trailing zeroes.
 func Format(value float64) string {
-	return strconv.FormatFloat(value, 'f', 6, 64)
+	return strconv.FormatFloat(value, 'f', -1, 64)
 }
