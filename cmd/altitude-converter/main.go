@@ -113,6 +113,9 @@ func readCSV(r io.Reader, to string) ([]record, error) {
 	if valueIndex < 0 || unitIndex < 0 {
 		return nil, errors.New("CSV header must include value (or altitude) and unit (or from)")
 	}
+	if len(rows) < 2 {
+		return nil, errors.New("CSV must contain a header and at least one data row")
+	}
 	var out []record
 	for i, row := range rows[1:] {
 		if valueIndex >= len(row) || unitIndex >= len(row) {
