@@ -22,3 +22,10 @@ func TestInvalidInput(t *testing.T) {
 		t.Error("unknown unit unexpectedly succeeded")
 	}
 }
+
+func TestConvertAcceptsSpacedUnitAlias(t *testing.T) {
+	got, from, to, err := Convert(1, "nautical mile", "m")
+	if err != nil || from != "nm" || to != "m" || got != 1852 {
+		t.Fatalf("Convert() = %v, %q, %q, %v", got, from, to, err)
+	}
+}
