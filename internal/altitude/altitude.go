@@ -55,6 +55,9 @@ func Convert(value float64, from, to string) (float64, string, string, error) {
 		return 0, "", "", err
 	}
 	result := value * units[from] / units[to]
+	if math.IsNaN(result) || math.IsInf(result, 0) {
+		return 0, "", "", fmt.Errorf("altitude conversion overflows: %g %s to %s", value, from, to)
+	}
 	return result, from, to, nil
 }
 
