@@ -22,3 +22,10 @@ func TestInvalidInput(t *testing.T) {
 		t.Error("unknown unit unexpectedly succeeded")
 	}
 }
+
+func TestParseValueAcceptsSurroundingWhitespace(t *testing.T) {
+	got, err := ParseValue(" \t1250\n")
+	if err != nil || got != 1250 {
+		t.Fatalf("ParseValue() = %v, %v", got, err)
+	}
+}

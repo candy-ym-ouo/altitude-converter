@@ -34,7 +34,7 @@ func NormalizeUnit(unit string) (string, error) {
 
 // ParseValue rejects blank, non-numeric, infinite, and NaN input.
 func ParseValue(text string) (float64, error) {
-	value, err := strconv.ParseFloat(strings.TrimSpace(text), 64)
+	value, err := strconv.ParseFloat(text, 64)
 	if err != nil || math.IsNaN(value) || math.IsInf(value, 0) {
 		return 0, fmt.Errorf("invalid altitude value %q", text)
 	}
